@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Scan URL</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        .result {
+            background: rgba(35, 28, 28, 0.95);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .back-btn {
+            text-decoration: none;
+            padding: 10px 15px;
+            background: #ff5722;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .back-btn:hover {
+            background: #d84315;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Hasil Scan URL</h1>
+
+        <div class="result">
+            <h2>URL yang diproses: {{ link }}</h2>
+            <h3>Hasil Scan:</h3>
+            {% if result %}
+                <ul>
+                    <li>Clean: {{ result.get('clean', 'N/A') }}</li>
+                    <li>Malicious: {{ result.get('malicious', 'N/A') }}</li>
+                    <li>Undetected: {{ result.get('undetected', 'N/A') }}</li>
+                    <!-- Add more data from the VirusTotal response as needed -->
+                </ul>
+            {% else %}
+                <p>Terjadi kesalahan saat memproses URL ini.</p>
+            {% endif %}
+        </div>
+
+        <a href="/" class="back-btn">Kembali ke Beranda</a>
+    </div>
+
+</body>
+</html>

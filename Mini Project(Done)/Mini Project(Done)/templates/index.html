@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Risk Assessment</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron&family=Poppins:wght@300;400;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 550px;
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        h1 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+            text-align: left;
+        }
+        input, textarea, select, button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        input, textarea, select {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+        }
+        button {
+            background: #ff5722;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 18px;
+            transition: background 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background: #d84315;
+            transform: scale(1.07);
+        }
+        .link-container {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .link-container a {
+            text-decoration: none;
+            color: #ffeb3b;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .link-container a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #ff5722;
+            color: white;
+        }
+        .action-buttons button {
+            margin-right: 5px;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .edit-button {
+            background: #ffc107;
+        }
+        .delete-button {
+            background: #d32f2f;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tambah Aset</h1>
+        <form action="/add_asset" method="POST">
+            <label for="asset_name">Nama Aset:</label>
+            <input type="text" id="asset_name" name="asset_name" required>
+            
+            <label for="asset_description">Deskripsi:</label>
+            <textarea id="asset_description" name="asset_description" required></textarea>
+            
+            <label for="criticality">Tingkat Kritikalitas:</label>
+            <select id="criticality" name="criticality">
+                <option value="Low">Rendah</option>
+                <option value="Medium">Sedang</option>
+                <option value="High">Tinggi</option>
+            </select>
+            
+            <button type="submit">Tambahkan Aset</button>
+        </form>
+    </div>
+    
+    <div class="container">
+        <h1>Masukkan Link</h1>
+        <form action="/process_link" method="POST">
+            <input type="url" name="link" placeholder="Masukkan URL di sini" required>
+            <input type="submit" value="Proses">
+        </form>
+        <div class="result">
+            {% if result %}
+                <h2>Hasil Proses Link</h2>
+                <p>{{ result }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Data Aset</h1>
+        <table>
+            <tr>
+                <th>Nama Aset</th>
+                <th>Deskripsi</th>
+                <th>Kritikalitas</th>
+                <th>Aksi</th>
+            </tr>
+            {% for asset in assets %}
+            <tr>
+                <td>{{ asset.name }}</td>
+                <td>{{ asset.description }}</td>
+                <td>{{ asset.criticality }}</td>
+                <td class="action-buttons">
+                    <form action="/edit_asset/{{ asset.id }}" method="GET" style="display:inline;">
+                        <button type="submit" class="edit-button">Edit</button>
+                    </form>
+                    <form action="/delete_asset/{{ asset.id }}" method="POST" style="display:inline;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus aset ini?');">
+                        <button type="submit" class="delete-button">Hapus</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
